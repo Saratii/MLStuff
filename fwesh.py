@@ -15,11 +15,15 @@ x_train = data_train[1:n]
 x_train = x_train / 255
 _, m_train = x_train.shape
 
+inputCount = 784 #28 x 28
+layer1NeuronCount = 9
+outputCount = 10
+
 def initParams():
-    w1 = np.random.rand(10, 784) - 0.5
-    b1 = np.random.rand(10, 1) - 0.5
-    w2 = np.random.rand(10, 10) - 0.5
-    b2 = np.random.rand(10, 1) - 0.5
+    w1 = np.random.rand(layer1NeuronCount, inputCount) - 0.5
+    b1 = np.random.rand(layer1NeuronCount, 1) - 0.5
+    w2 = np.random.rand(outputCount, layer1NeuronCount) - 0.5
+    b2 = np.random.rand(outputCount, 1) - 0.5
     return w1, b1, w2, b2
 
 def relu(z):
@@ -67,7 +71,7 @@ def gradientDescent(x, y, iterations, learningRate):
         if i % 10 == 0:
             print(f'Iteration: {i} Accuracy: {getAccuracy(getPredictions(a2), y)}')
     return w1, b1, w2, b2
-w1, b1, w2, b2 = gradientDescent(x_train, y_train, 1000, 0.1)
+w1, b1, w2, b2 = gradientDescent(x_train, y_train, 100, 0.1)
 
 def makePredictions(x, w1, b1, w2, b2):
     _, _, _, a2 = forwardProp(w1, b1, w2, b2, x)
