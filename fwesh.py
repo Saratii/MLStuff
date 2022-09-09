@@ -1,40 +1,37 @@
 import numpy as np
 import pandas as pd
-from colorama import Fore
-from colorama import Style
+
 
 import matplotlib.pyplot as plt
-data = pd.read_csv('Python/mnist_train.csv')
-testdata = pd.read_csv('Python/mnist_test.csv')
-customData = pd.read_csv('Python/customDrawing.csv')
+data = pd.read_csv('mnist_train.csv')
+testdata = pd.read_csv('mnist_test.csv')
+customData = pd.read_csv('customDrawing.csv')
 
 inputCount = 784 #28 x 28
-layer1NeuronCount = 1000
+layer1NeuronCount = 10
 outputCount = 10
-numIterations = 10000
-numDataPoints = 55000
-numTestingPoints = 1000
+numIterations = 1000
+retrain = True
 
-def processData(data, numDataPoints):
+def processData(data):
     data = np.array(data)
     np.random.shuffle(data)
     m, n = data.shape
-    data_dev = data[0:numDataPoints].T
+    data_dev = data[0:].T
     y_dev = data_dev[0]
     x_dev = data_dev[1:n]
     x_dev = x_dev / 255
-    data_train = data[numDataPoints:m].T
+    data_train = data[0:m].T
     y_train = data_train[0]
     x_train = data_train[1:n]
     x_train = x_train / 255
     return m, x_train, y_train, data_train, x_dev, y_dev
 
-m, x_train, y_train, data_train, x_dev, y_dev = processData(data, numDataPoints)
-testm, testx_train, testy_train, testdata_train, testx_dev, testy_dev = processData(testdata, numTestingPoints)
-cm, cx_train, cy_train, cdata_train, cx_dev, cy_dev = processData(customData, 1)
+m, x_train, y_train, data_train, x_dev, y_dev = processData(data)
+testm, testx_train, testy_train, testdata_train, testx_dev, testy_dev = processData(testdata)
+cm, cx_train, cy_train, cdata_train, cx_dev, cy_dev = processData(customData)
 
 #_, m_train = x_train.shape
-
 
 
 def initParams():
@@ -43,7 +40,6 @@ def initParams():
     w2 = np.random.rand(outputCount, layer1NeuronCount) - 0.5
     b2 = np.random.rand(outputCount, 1) - 0.5
     return w1, b1, w2, b2
-
 def relu(z):
     return np.maximum(0, z)
 def dRelu(z):
@@ -90,9 +86,9 @@ def gradientDescent(x, y, iterations, learningRate):
         if i % 10 == 0:
             acc = getAccuracy(getPredictions(a2), y)
             if acc > previousAcc:
-                print(f'{Fore.GREEN}Iteration: {i} Accuracy: {acc}{Style.RESET_ALL}')
+                print(f'Iteration: {i} Accuracy: {acc}')
             elif acc <= previousAcc:
-                print(f'{Fore.RED}Iteration: {i} Accuracy: {acc}{Style.RESET_ALL}')
+                print(f'Iteration: {i} Accuracy: {acc}')
             previousAcc = acc
 
     return w1, b1, w2, b2
@@ -110,26 +106,36 @@ def testPredictions(index, w1, b1, w2, b2, test=False, custom=False):
         currentImage = x_train[:, index, None]
         label = y_train[index]
     prediction = makePredictions(currentImage, w1, b1, w2, b2)
-    if label == prediction:
-        print(f'{Fore.GREEN}Prediction: {prediction} Label: {label}{Style.RESET_ALL}')
-    elif label != prediction:
-        print(f'{Fore.RED}Prediction: {prediction} Label: {label}{Style.RESET_ALL}')
+    
+    print(f'Prediction: {prediction} Label: {label}')
     currentImage = currentImage.reshape((28, 28)) * 255
     plt.gray()
     plt.imshow(currentImage, interpolation='nearest')
     plt.show()
-    
-w1, b1, w2, b2 = gradientDescent(x_train, y_train, numIterations, 0.1)
+def readWB():
+    f = open("weights&biases.txt", "w")
+    w1 = f.readline()
+    b1 = f.readline()
+    w2 = f.readline()
+    b2 = f.readline()
+    return w1, b1, w2, b2
+def writeWB(w1, b1, w2, b2):
+    f = open("weights&biases.txt", "w")
+    f.write(str(w1))
+    f.write(str(b1))
+    f.write(str(w2))
+    f.write(str(b2))
+    f.close()
+if retrain:
+    w1, b1, w2, b2 = gradientDescent(x_train, y_train, numIterations, 0.1)
+    writeWB(w1, b1, w2, b2)
+else: 
+    w1, b1, w2, b2 = readWB()
 
 print(f'Training Accuracy {getAccuracy(makePredictions(x_dev, w1, b1, w2, b2), y_dev)}')
-f = open("weights&biases.txt", "w")
-f.write(str(w1))
-f.write(str(b1))
-f.write(str(w2))
-f.write(str(b2))
-f.close()
+
 print(f'Testing Accuracy {getAccuracy(makePredictions(testx_dev, w1, b1, w2, b2), testy_dev)}\n')
 
-for i in range(numTestingPoints):
-    testPredictions(i, w1, b1, w2, b2, test=True)
-# testPredictions(0, w1, b1, w2, b2, custom=True)
+# for i in range(numTestingPoints):
+#     testPredictions(i, w1, b1, w2, b2, test=True)
+testPredictions(0, w1, b1, w2, b2, custom=True)

@@ -3,3 +3,5 @@ __pycache__/
 my_venv/
 mnist_train.csv
 mnist_test.csv
+customDrawing.csv
+weights&biases.txt
