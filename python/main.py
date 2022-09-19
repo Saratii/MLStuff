@@ -35,5 +35,3 @@ def train(X, y, neurons, iterations):
     return NN
 
 NN = train(X2, y2, neurons=10, iterations=1000)
-print(X1)
-print(X2)
