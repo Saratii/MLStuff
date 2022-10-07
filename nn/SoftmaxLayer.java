@@ -27,9 +27,9 @@ public class SoftmaxLayer extends Layer {
             for (int i = 0; i < value.rows; i++) {
                 for (int j = 0; j < value.rows; j++) {
                     if (i == j) {
-                        jacobian.values.get(i).set(j, outputs.get(k).values.get(i).get(0) * (1 - outputs.get(k).values.get(j).get(0)));
+                        jacobian.set(i, j, outputs.get(k).get(i, 0) * (1 - outputs.get(k).get(j, 0)));
                     } else {
-                        jacobian.values.get(i).set(j, outputs.get(k).values.get(i).get(0) * (0 - outputs.get(k).values.get(j).get(0)));
+                        jacobian.set(i, j, outputs.get(k).get(i, 0) * (0 - outputs.get(k).get(j, 0)));
                     }
                 }
             }
@@ -42,11 +42,11 @@ public class SoftmaxLayer extends Layer {
         assert (values.cols == 1);
         Double ex = 0.0;
         for (int i = 0; i < values.rows; i++) {
-            ex += Math.pow(Math.E, values.values.get(i).get(0));
+            ex += Math.pow(Math.E, values.get(i, 0));
         }
         Matrix newValues = new Matrix(values.rows, values.cols);
         for (int i = 0; i < values.rows; i++) {
-            newValues.values.get(i).set(0, Math.pow(Math.E, values.values.get(i).get(0) / ex));
+            newValues.set(i, 0, Math.pow(Math.E, values.get(i, 0) / ex));
         }
         return newValues;
     }

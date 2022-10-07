@@ -13,7 +13,7 @@ public class ReLULayer extends Layer {
     public List<Matrix> forward(List<Matrix> values) throws Exception {
         outputs = new ArrayList<>();
         for (Matrix value : values) {
-            outputs.add(ReLU(value.multiply(weights.add(biases))));
+            outputs.add(ReLU(value.multiply(weights).add(biases)));
         }
         return outputs;
     }
@@ -25,10 +25,10 @@ public class ReLULayer extends Layer {
             Matrix jacobian = new Matrix(value.rows, value.cols);
             for (int i = 0; i < value.rows; i++) {
                 for (int j = 0; j < value.cols; j++) {
-                    if (value.values.get(i).get(j) >= 0) {
-                        jacobian.values.get(i).set(j, 1.0);
+                    if (value.get(i, j) >= 0) {
+                        jacobian.set(i, j, 1.0);
                     } else {
-                        jacobian.values.get(i).set(j, 0.0);
+                        jacobian.set(i, j, 0.0);
                     }
                 }
             }
@@ -40,8 +40,8 @@ public class ReLULayer extends Layer {
     public Matrix ReLU(Matrix values) {
         assert (values.cols == 1);
         for (int i = 0; i < values.rows; i++) {
-            if (values.values.get(i).get(0) < 0) {
-                values.values.get(i).set(0, 0.0);
+            if (values.get(i, 0) < 0) {
+                values.set(i, 0, 0.0);
             }
         }
         return values;

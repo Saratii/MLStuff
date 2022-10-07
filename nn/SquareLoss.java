@@ -8,14 +8,14 @@ public class SquareLoss {
         List<Double> losses = new ArrayList<>();
         for(int i = 0; i < inputs.size(); i++){
             Double loss = 0.0;
-            for(int j = 0; j < inputs.get(i).values.size(); j++){
+            for(int j = 0; j < inputs.get(i).rows; j++){
                 if(j == actual.get(i)){
-                    loss += Math.pow((1 - inputs.get(i).values.get(j).get(0)), 2);
+                    loss += Math.pow((1 - inputs.get(i).get(j, 0)), 2);
                 } else {
-                    loss += Math.pow((0 - inputs.get(i).values.get(j).get(0)), 2);
+                    loss += Math.pow((0 - inputs.get(i).get(j, 0)), 2);
                 }
             }
-            losses.add(loss);
+            losses.add(loss / 2.0);
         }
         return losses;
     }
@@ -25,9 +25,9 @@ public class SquareLoss {
             Matrix value = new Matrix(1, inputs.get(i).cols);
             for(int j = 0; j < value.cols; j++){
                 if(j == actual.get(i)){
-                    value.values.get(0).set(j, 2 * (1 - inputs.get(i).values.get(j).get(0)));
+                    value.set(0, j, 1 - inputs.get(i).get(0, j));
                 } else {
-                    value.values.get(0).set(j, 2 * (0 - inputs.get(i).values.get(j).get(0)));
+                    value.set(0, j, 0 - inputs.get(i).get(0, j));
                 }
             }
             values.add(value);

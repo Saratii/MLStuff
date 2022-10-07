@@ -14,7 +14,9 @@ public class Main{
         List<Integer> actual = Arrays.asList(
             0, 1
         );
-        nn.train(data, actual);
+        for(int i = 0; i < 10; i++) {
+            nn.train(data, actual);
+        }
         // [1, 2, 3, 4, 5] = Forg //0
         // [5, 4, 3, 2, 1] = Pengoo //1
     }   
