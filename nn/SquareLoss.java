@@ -19,4 +19,19 @@ public class SquareLoss {
         }
         return losses;
     }
+    static List<Matrix> backward(List<Matrix> inputs, List<Integer> actual){
+        List<Matrix> values = new ArrayList<>();
+        for(int i = 0; i<inputs.size(); i++){
+            Matrix value = new Matrix(1, inputs.get(i).cols);
+            for(int j = 0; j < value.cols; j++){
+                if(j == actual.get(i)){
+                    value.values.get(0).set(j, 2 * (1 - inputs.get(i).values.get(j).get(0)));
+                } else {
+                    value.values.get(0).set(j, 2 * (0 - inputs.get(i).values.get(j).get(0)));
+                }
+            }
+            values.add(value);
+        }
+        return values;
+    }
 }

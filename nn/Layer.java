@@ -1,5 +1,6 @@
 package nn;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class Layer {
@@ -7,7 +8,7 @@ public abstract class Layer {
     int numOutputs;
     Matrix weights;
     Matrix biases;
-    Matrix outputs;
+    List<Matrix> outputs;
 
     public Layer(int numInputs, int numOutputs){
         this.numInputs = numInputs;
@@ -24,6 +25,6 @@ public abstract class Layer {
             biases.values.get(0).set(i, 2 * r.nextDouble() - 1);
         }
     }
-    public abstract Matrix forward(Matrix values) throws Exception;
-    public abstract Matrix backward(Matrix values);
+    public abstract List<Matrix> forward(List<Matrix> values) throws Exception;
+    public abstract List<Matrix> backward(List<Matrix> values);
 }
