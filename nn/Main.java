@@ -14,7 +14,7 @@ public class Main{
         List<Integer> actual = Arrays.asList(
             0, 1
         );
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 100; i++) {
             nn.train(data, actual);
         }
         // [1, 2, 3, 4, 5] = Forg //0

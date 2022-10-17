@@ -8,7 +8,7 @@ public class NeuralNet {
     int numInputs;
     int numClasses;
     List<Layer> layers;
-    static double LEARNING_RATE = 0.1;
+    static double ALPHA = 100;
 
     public NeuralNet(int numInputs, int numClasses, List<Integer> numNodesInHiddenLayers) {
         this.numInputs = numInputs;
@@ -21,7 +21,7 @@ public class NeuralNet {
                 layers.add(new ReLULayer(numNodesInHiddenLayers.get(i - 1), numNodesInHiddenLayers.get(i)));
             }
         }
-        layers.add(new LogLayer(numNodesInHiddenLayers.get(numNodesInHiddenLayers.size() - 1), numClasses));
+        layers.add(new SoftmaxLayer(numNodesInHiddenLayers.get(numNodesInHiddenLayers.size() - 1), numClasses));
     }
 
     public void train(List<List<Double>> data, List<Integer> actual) throws Exception {
@@ -37,9 +37,9 @@ public class NeuralNet {
             values = layer.forward(values);
         }
         System.out.println("Predicted: " + values);
-        List<Double> loss = SquareLoss.calculate(values, actual);
+        List<Double> loss = CrossEntropyLoss.calculate(values, actual);
         System.out.println(loss);
-        List<Matrix> derivatives = SquareLoss.backward(values, actual);
+        List<Matrix> derivatives = CrossEntropyLoss.backward(values, actual);
         for (int i = layers.size() - 1; i >= 0; i--) {
             derivatives = layers.get(i).backward(derivatives);
         }

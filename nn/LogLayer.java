@@ -28,8 +28,8 @@ public class LogLayer extends Layer {
             for (int j = 0; j < numOutputs; j++) {
                 output.set(0, j, value.get(0, j) * this.outputs.get(i).get(0, j) * (1 - this.outputs.get(i).get(0, j)));
             }
-            weights = weights.add(inputs.get(i).T().multiply(output).multiply(NeuralNet.LEARNING_RATE));
-            biases = biases.add(output.multiply(NeuralNet.LEARNING_RATE));
+            weights = weights.add(inputs.get(i).T().multiply(output).multiply(NeuralNet.ALPHA));
+            biases = biases.add(output.multiply(NeuralNet.ALPHA));
             outputs.add(output);
         }
         return outputs;

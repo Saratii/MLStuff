@@ -12,36 +12,49 @@ public class ReLULayer extends Layer {
     @Override
     public List<Matrix> forward(List<Matrix> values) throws Exception {
         outputs = new ArrayList<>();
+        inputs = values;
         for (Matrix value : values) {
             outputs.add(ReLU(value.multiply(weights).add(biases)));
         }
         return outputs;
     }
-
     @Override
-    public List<Matrix> backward(List<Matrix> values) {
-        List<Matrix> jacobians = new ArrayList<>();
-        for (Matrix value : values) {
-            Matrix jacobian = new Matrix(value.rows, value.cols);
-            for (int i = 0; i < value.rows; i++) {
-                for (int j = 0; j < value.cols; j++) {
-                    if (value.get(i, j) >= 0) {
-                        jacobian.set(i, j, 1.0);
-                    } else {
-                        jacobian.set(i, j, 0.0);
+    public List<Matrix> backward(List<Matrix> values) throws Exception {
+        List<Matrix> derivatives = new ArrayList<>();
+        for(int i = 0; i < values.size(); i++){
+            Matrix value = values.get(i);
+            Matrix reluPrime = new Matrix(outputs.get(i).cols, outputs.get(i).cols);
+            for(int j = 0; j < reluPrime.cols; j++){
+                for(int k = 0; k < reluPrime.cols; k++){
+                    if(outputs.get(i).get(0, k) > 0){
+                        reluPrime.set(0, k, 1);
                     }
                 }
             }
-            jacobians.add(jacobian);
+            derivatives.add(value.multiply(reluPrime).multiply(weights.T()));
         }
-        return jacobians;
+        for(int i = 0; i < values.size(); i++){
+            Matrix reluPrime = new Matrix(outputs.get(i).cols, outputs.get(i).cols);
+            for(int j = 0; j < reluPrime.cols; j++){
+                for(int k = 0; k < reluPrime.cols; k++){
+                    if(outputs.get(i).get(0, k) > 0){
+                        reluPrime.set(0, k, 1);
+                    }
+                }
+            }
+            weights = weights.subtract(values.get(i).multiply(reluPrime).T().multiply(inputs.get(i)).divide(NeuralNet.ALPHA).T());
+            biases = biases.subtract(values.get(i).multiply(reluPrime).divide(NeuralNet.ALPHA));
+        }
+
+        
+        return derivatives;
     }
 
     public Matrix ReLU(Matrix values) {
-        assert (values.cols == 1);
-        for (int i = 0; i < values.rows; i++) {
-            if (values.get(i, 0) < 0) {
-                values.set(i, 0, 0.0);
+        assert (values.rows == 1);
+        for (int i = 0; i < values.cols; i++) {
+            if (values.get(0, i) < 0) {
+                values.set(0, i, 0.0);
             }
         }
         return values;

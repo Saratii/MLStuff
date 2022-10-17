@@ -1,6 +1,5 @@
 package nn;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Matrix {
@@ -93,6 +92,30 @@ public class Matrix {
         return t;
     }
     public String toString(){
+        if(transposed){
+            return transpose.values.toString();
+        }
         return values.toString();
+    }
+    public Matrix subtract(Matrix b) throws Exception{
+        if (rows != b.rows || cols != b.cols){
+            throw new Exception("mismatched dims");
+        }
+        Matrix newValues = new Matrix(rows, cols);
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                newValues.set(i, j, get(i, j) - b.get(i, j));
+            }
+        }
+        return newValues;
+    }
+    public Matrix divide(double b) {
+        Matrix newValues = new Matrix(rows, cols);
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                newValues.set(i, j, get(i,j) / b);
+            }
+        }
+        return newValues;
     }
 }
