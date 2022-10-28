@@ -8,8 +8,8 @@ public class SquareLoss implements LossFunction{
         List<Double> losses = new ArrayList<>();
         for(int i = 0; i < inputs.size(); i++){
             Double loss = 0.0;
-            for(int j = 0; j < inputs.get(i).rows; j++){
-                loss += Math.pow((actual.get(i).get(j) - inputs.get(i).get(j, 0)), 2);  
+            for(int j = 0; j < inputs.get(i).cols; j++){
+                loss += Math.pow((actual.get(i).get(j) - inputs.get(i).get(0, j)), 2);  
             }
             losses.add(loss / 2.0);
         }
@@ -20,7 +20,7 @@ public class SquareLoss implements LossFunction{
         for(int i = 0; i<inputs.size(); i++){
             Matrix value = new Matrix(1, inputs.get(i).cols);
             for(int j = 0; j < value.cols; j++){
-                value.set(0, j, actual.get(i).get(j) - inputs.get(i).get(0, j));
+                value.set(0, j, inputs.get(i).get(0, j) - actual.get(i).get(j));
             }
             values.add(value);
         }
