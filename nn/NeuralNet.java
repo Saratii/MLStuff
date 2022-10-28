@@ -8,7 +8,8 @@ public class NeuralNet {
     int numInputs;
     int numClasses;
     List<Layer> layers;
-    static double ALPHA = 100;
+    LossFunction lossFunction;
+    static double ALPHA = 1000;
 
     public NeuralNet(int numInputs, int numClasses, List<Integer> numNodesInHiddenLayers) {
         this.numInputs = numInputs;
@@ -16,15 +17,16 @@ public class NeuralNet {
         layers = new ArrayList<>();
         for (int i = 0; i < numNodesInHiddenLayers.size(); i++) {
             if (i == 0) {
-                layers.add(new ReLULayer(numInputs, numNodesInHiddenLayers.get(i)));
+                layers.add(new LogLayer(numInputs, numNodesInHiddenLayers.get(i)));
             } else {
-                layers.add(new ReLULayer(numNodesInHiddenLayers.get(i - 1), numNodesInHiddenLayers.get(i)));
+                layers.add(new LogLayer(numNodesInHiddenLayers.get(i - 1), numNodesInHiddenLayers.get(i)));
             }
         }
-        layers.add(new SoftmaxLayer(numNodesInHiddenLayers.get(numNodesInHiddenLayers.size() - 1), numClasses));
+        layers.add(new LogLayer(numNodesInHiddenLayers.get(numNodesInHiddenLayers.size() - 1), numClasses));
+        lossFunction = new SquareLoss();
     }
 
-    public void train(List<List<Double>> data, List<Integer> actual) throws Exception {
+    public void train(List<List<Double>> data, List<List<Double>> actual) throws Exception {
         List<Matrix> values = new ArrayList<>();
         for (List<Double> point : data) {
             Matrix value = new Matrix(1, point.size());
@@ -37,9 +39,9 @@ public class NeuralNet {
             values = layer.forward(values);
         }
         System.out.println("Predicted: " + values);
-        List<Double> loss = CrossEntropyLoss.calculate(values, actual);
-        System.out.println(loss);
-        List<Matrix> derivatives = CrossEntropyLoss.backward(values, actual);
+        List<Double> loss = lossFunction.calculate(values, actual);
+        System.out.println("Loss: " + loss);
+        List<Matrix> derivatives = lossFunction.backward(values, actual);
         for (int i = layers.size() - 1; i >= 0; i--) {
             derivatives = layers.get(i).backward(derivatives);
         }

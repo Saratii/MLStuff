@@ -13,12 +13,12 @@ B1 = 0.4
 W2 = np.array([0.1, 0.2])
 B2 = np.array([0.1, 0.2])
 learningRate = 0.01
-
+ #fix
 def forward():
     layer1 = X * W1 + B1
     activation1 = max(0, layer1) #ReLU
     layer2 = activation1 * W2 + B2
-    activation2 = softmax(layer2)
+    activation2 = softmax(layer2) #
     loss = squaredDifference(activation2, y)
     loss = np.sum(loss) / len(loss)
     return layer1, activation1, layer2, activation2, loss
