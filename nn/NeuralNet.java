@@ -1,7 +1,6 @@
 package nn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class NeuralNet {
@@ -50,25 +49,25 @@ public class NeuralNet {
         }
     }
 
-    public int classify(List<Double> input) throws Exception {
-        if (input.size() != numInputs) {
-            throw new Exception("bad input size");
-        }
-        List<Matrix> layerOutput = Arrays.asList(new Matrix(input.size(), 1));
-        for (int i = 0; i < input.size(); i++) {
-            layerOutput.get(0).set(i, 0, input.get(i));
+    public void classify(List<List<Double>> input) throws Exception {
+        List<Matrix> values = new ArrayList<>();
+        for (List<Double> point : input) {
+            Matrix value = new Matrix(1, point.size());
+            for (int i = 0; i < point.size(); i++) {
+                value.set(0, i, point.get(i));
+            }
+            values.add(value);
         }
         for (Layer layer : layers) {
-            layerOutput = layer.forward(layerOutput);
+            values = layer.forward(values);
         }
-        double best = 0;
-        int bestIndex = 0;
-        for (int i = 0; i < numClasses; i++) {
-            if (layerOutput.get(0).get(i, 0) > best) {
-                best = layerOutput.get(0).get(i, 0);
-                bestIndex = i;
-            }
+        
+        System.out.println('\n');
+        System.out.println(values);
+        if(values.get(0).get(0, 0) < values.get(0).get(0, 1)){
+            System.out.println("cat\n");
+        } else {
+            System.out.println("dog\n");
         }
-        return bestIndex;
     }
 }
