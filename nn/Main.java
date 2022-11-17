@@ -13,8 +13,8 @@ import java.util.List;
 public class Main {
     
     public static void main(String[] args) throws Exception {
-        File lizzardTestFolderPath = new File("/Users/propleschmaren/Desktop/MLStuff/TestLizards");
-        File lizzoTestFolderPath = new File("/Users/propleschmaren/Desktop/MLStuff/TestLizzos");
+        File lizzardTestFolderPath = new File("TestLizards");
+        File lizzoTestFolderPath = new File("TestLizzos");
         File[] lizardTestFiles = lizzardTestFolderPath.listFiles();
         File[] lizzoTestFiles = lizzoTestFolderPath.listFiles();
         // var frame = new JFrame();
@@ -31,7 +31,7 @@ public class Main {
         dp.processTrainingData();
         dp.processTestingData();
         NeuralNet nn = new NeuralNet(dp.trainingData.get(0).size(), 2, Arrays.asList(2));
-        for (int i = 0; i < 4000; i++) {
+        for (int i = 0; i < 400; i++) {
             nn.train(dp.trainingData, dp.trainingActual, i + 1, 10);
         }
 

@@ -15,12 +15,11 @@ public class DataProcessor {
     List<List<Double>> trainingActual = new ArrayList<>();
     List<List<Double>> testingActual = new ArrayList<>();
 
-
     public DataProcessor(){
     }
     public void processTrainingData() throws IOException{
-        File xFile = new File("/Users/propleschmaren/Desktop/MLStuff/X.txt");
-        File yFile = new File("/Users/propleschmaren/Desktop/MLStuff/Y.txt");
+        File xFile = new File("X.txt");
+        File yFile = new File("Y.txt");
         BufferedReader br = new BufferedReader(new FileReader(xFile));
         BufferedReader br2 = new BufferedReader(new FileReader(yFile));
         List<String> lines = new ArrayList<>();
@@ -51,8 +50,8 @@ public class DataProcessor {
         }
     }
     public void processTestingData() throws IOException{
-        File txFile = new File("/Users/propleschmaren/Desktop/MLStuff/testX.txt");
-        File tyFile = new File("/Users/propleschmaren/Desktop/MLStuff/testY.txt");
+        File txFile = new File("testX.txt");
+        File tyFile = new File("testY.txt");
         BufferedReader br3 = new BufferedReader(new FileReader(txFile));
         BufferedReader br4 = new BufferedReader(new FileReader(tyFile));
         List<String> testLines = new ArrayList<>();
