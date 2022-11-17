@@ -40,14 +40,22 @@ public class NeuralNet {
         }
         List<Double> loss = lossFunction.calculate(values, actual);
         if (iteration % logFrequency == 0) {
-            System.out.println("Predicted: " + values);
-            System.out.println("Loss: " + loss);
+            System.out.println("\nPredicted: " + values);
+            // System.out.println("Loss: " + loss);
+            System.out.println("Iteration: "+iteration+" Loss Sum: "+ sum(loss));
         }
         List<Matrix> derivatives = lossFunction.backward(values, actual);
         for (int i = layers.size() - 1; i >= 0; i--) {
             derivatives = layers.get(i).backward(derivatives);
         }
     }
+    public double sum(List<Double> list) {
+        double sum = 0.0; 
+        for (double i : list)
+            sum = sum + i;
+   
+        return sum/list.size();
+   }
 
     public void classify(List<List<Double>> input) throws Exception {
         List<Matrix> values = new ArrayList<>();
@@ -65,9 +73,9 @@ public class NeuralNet {
         System.out.println('\n');
         System.out.println(values);
         if(values.get(0).get(0, 0) < values.get(0).get(0, 1)){
-            System.out.println("cat\n");
+            System.out.println("Predicted: lizard");
         } else {
-            System.out.println("dog\n");
+            System.out.println("Predicted: lizzo");
         }
     }
 }

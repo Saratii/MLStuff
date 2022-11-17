@@ -13,6 +13,8 @@ public class DataProcessor {
     List<List<Double>> trainingData = new ArrayList<>();
     List<List<Double>> testingData = new ArrayList<>();
     List<List<Double>> trainingActual = new ArrayList<>();
+    List<List<Double>> testingActual = new ArrayList<>();
+
 
     public DataProcessor(){
     }
@@ -50,18 +52,33 @@ public class DataProcessor {
     }
     public void processTestingData() throws IOException{
         File txFile = new File("/Users/propleschmaren/Desktop/MLStuff/testX.txt");
+        File tyFile = new File("/Users/propleschmaren/Desktop/MLStuff/testY.txt");
         BufferedReader br3 = new BufferedReader(new FileReader(txFile));
+        BufferedReader br4 = new BufferedReader(new FileReader(tyFile));
         List<String> testLines = new ArrayList<>();
+        List<String> testLinesY = new ArrayList<>();
         while((st = br3.readLine()) != null){testLines.add(st);}
         br3.close();
+        while((st = br4.readLine()) != null){testLinesY.add(st);}
+        br4.close();
         List<List<String>> testLines2 = new ArrayList<>();
+        List<List<String>> testLinesY2 = new ArrayList<>();
         for(int i = 0; i < testLines.size(); i++){
             testLines2.add(Arrays.asList(testLines.get(i).split(",")));
+        }
+        for(int i = 0; i < testLinesY.size(); i++){
+            testLinesY2.add(Arrays.asList(testLinesY.get(i).split(",")));
         }
         for(int i = 0; i < testLines2.size(); i++){
             testingData.add(new ArrayList<>());
             for(int j = 0; j < testLines2.get(0).size(); j++){
                 testingData.get(i).add(Double.parseDouble(testLines2.get(i).get(j)));
+            }
+        }
+        for(int i = 0; i < testLinesY2.size(); i++){
+            testingActual.add(new ArrayList<>());
+            for(int j = 0; j < testLinesY2.get(0).size(); j++){
+                testingActual.get(i).add(Double.parseDouble(testLinesY2.get(i).get(j)));
             }
         }
     }
