@@ -11,6 +11,7 @@ import java.util.List;
 // import javax.swing.JLabel;
 
 public class Main {
+    static int NUM_CLASSES = 3;
     
     public static void main(String[] args) throws Exception {
         File lizzardTestFolderPath = new File("TestLizards");
@@ -30,7 +31,7 @@ public class Main {
         DataProcessor dp = new DataProcessor();
         dp.processTrainingData();
         dp.processTestingData();
-        NeuralNet nn = new NeuralNet(dp.trainingData.get(0).size(), 2, Arrays.asList(2));
+        NeuralNet nn = new NeuralNet(dp.trainingData.get(0).size(), NUM_CLASSES, Arrays.asList(5));
         for (int i = 0; i < 400; i++) {
             nn.train(dp.trainingData, dp.trainingActual, i + 1, 10);
         }
