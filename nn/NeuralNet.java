@@ -8,7 +8,7 @@ public class NeuralNet {
     int numClasses;
     List<Layer> layers;
     LossFunction lossFunction;
-    static double ALPHA = 50;
+    static double ALPHA = 75;
 
     public NeuralNet(int numInputs, int numClasses, List<Integer> numNodesInHiddenLayers) {
         this.numInputs = numInputs;
@@ -25,7 +25,7 @@ public class NeuralNet {
         lossFunction = new SquareLoss();
     }
 
-    public void train(List<List<Double>> data, List<List<Double>> actual, int iteration, int logFrequency)
+    public List<Double> train(List<List<Double>> data, List<List<Double>> actual, int iteration)
             throws Exception {
         List<Matrix> values = new ArrayList<>();
         for (List<Double> point : data) {
@@ -39,23 +39,13 @@ public class NeuralNet {
             values = layer.forward(values);
         }
         List<Double> loss = lossFunction.calculate(values, actual);
-        if (iteration % logFrequency == 0) {
-            System.out.println("\nPredicted: " + values);
-            // System.out.println("Loss: " + loss);
-            System.out.println("Iteration: "+iteration+" Loss Sum: "+ sum(loss));
-        }
+        
         List<Matrix> derivatives = lossFunction.backward(values, actual);
         for (int i = layers.size() - 1; i >= 0; i--) {
             derivatives = layers.get(i).backward(derivatives);
         }
+        return loss;
     }
-    public double sum(List<Double> list) {
-        double sum = 0.0; 
-        for (double i : list)
-            sum = sum + i;
-   
-        return sum/list.size();
-   }
 
     public void classify(List<List<Double>> input) throws Exception {
         List<Matrix> values = new ArrayList<>();

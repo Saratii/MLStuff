@@ -26,15 +26,11 @@ public class LogLayer extends Layer {
             Matrix value = values.get(i);
             Matrix output = new Matrix(1, value.cols);
             for (int j = 0; j < numOutputs; j++) {
-
-                try { 
-                    output.set(0, j, value.get(0, j) * this.outputs.get(i).get(0, j) * (1 - this.outputs.get(i).get(0, j)));
-                } catch(Exception e){
-                    System.out.println("eeeee"+j);
-                }
+                output.set(0, j, value.get(0, j) * this.outputs.get(i).get(0, j) * (1 - this.outputs.get(i).get(0, j)));
             }
             weights = weights.subtract(inputs.get(i).T().multiply(output).divide(NeuralNet.ALPHA));
             biases = biases.subtract(output.divide(NeuralNet.ALPHA));
+            output = output.multiply(weights.T());
             outputs.add(output);
         }
         return outputs;
@@ -49,5 +45,4 @@ public class LogLayer extends Layer {
         }
         return output;
     }
-
 }
