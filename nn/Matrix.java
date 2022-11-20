@@ -59,7 +59,7 @@ public class Matrix {
     public double get(int row, int col) {
         if(transposed) {
             return transpose.get(col, row);
-        }
+        }   
         return values.get(row).get(col);
     }
     public void set(int row, int col, double value) {

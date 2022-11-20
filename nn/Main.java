@@ -1,9 +1,6 @@
 package nn;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 // import java.util.Random;
 
 // import javax.swing.ImageIcon;
@@ -12,21 +9,7 @@ import java.util.List;
 
 public class Main {
     static int NUM_CLASSES = 3;
-    
     public static void main(String[] args) throws Exception {
-        File lizzardTestFolderPath = new File("TestLizards");
-        File lizzoTestFolderPath = new File("TestLizzos");
-        File[] lizardTestFiles = lizzardTestFolderPath.listFiles();
-        File[] lizzoTestFiles = lizzoTestFolderPath.listFiles();
-        // var frame = new JFrame();
-        // String imgPath = "";
-        List<File> testFiles = new ArrayList<>();
-        for(int i = 0; i < lizardTestFiles.length; i++){
-            testFiles.add(lizardTestFiles[i]);
-        }
-        for(int i = 0; i < lizzoTestFiles.length; i++){
-            testFiles.add(lizzoTestFiles[i]);
-        }
 
         DataProcessor dp = new DataProcessor();
         dp.processTrainingData();
@@ -43,20 +26,9 @@ public class Main {
             } else if(dp.testingActual.get(i).get(0) == 1.0){
                 System.out.println("Actual: lizzo");
             }
-            // imgPath = testFiles.get(i).toString();
         }
-        //lizzo is 1,0
-        //lizzard is 0,1
-        
-        
-        
-
-        // var icon = new ImageIcon(imgPath);
-        // var Jlabel = new JLabel(icon);
-        // frame.add(Jlabel);
-        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // frame.pack();
-        // frame.setVisible(true);
-
+        //lizzo is 1,0,0
+        //lizzard is 0,1,0
+        //cracker bear is 0,0,1
     }
 }
