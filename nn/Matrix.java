@@ -118,4 +118,15 @@ public class Matrix {
         }
         return newValues;
     }
+    public int maxPosition(){
+        double max = 0;
+        int maxPos = 0;
+        for(int i = 0; i < cols; i++){
+            if(get(0, i) > max){
+                max = get(0, i);
+                maxPos = i;
+            }
+        }
+        return maxPos;
+    }
 }

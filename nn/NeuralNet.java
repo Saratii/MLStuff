@@ -8,7 +8,7 @@ public class NeuralNet {
     int numClasses;
     List<Layer> layers;
     LossFunction lossFunction;
-    static double ALPHA = 75;
+    static double ALPHA = 500;
 
     public NeuralNet(int numInputs, int numClasses, List<Integer> numNodesInHiddenLayers) {
         this.numInputs = numInputs;
@@ -61,11 +61,13 @@ public class NeuralNet {
         }
         
         System.out.println('\n');
-        System.out.println(values);
-        if(values.get(0).get(0, 0) < values.get(0).get(0, 1)){
-            System.out.println("Predicted: lizard");
-        } else {
-            System.out.println("Predicted: lizzo");
+        System.out.println(values);        
+        if(values.get(0).maxPosition() == 0){
+            System.out.println("Predicted: Elephant");
+        } else if(values.get(0).maxPosition() == 1){
+            System.out.println("Predicted: Squirrel");
+        // } else if(values.get(0).maxPosition() == 2){
+        //     System.out.println("Predicted: Cracker Bear");
         }
     }
 }
