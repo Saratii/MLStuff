@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Main {
     static int NUM_CLASSES = 2;
-    static int NUM_NODES = 16;
+    static int NUM_NODES = 32;
     static int NUM_HIDDEN_LAYERS = 2;
     static int LOG_FREQUENCY = 1;
     public static void main(String[] args) throws Exception {
@@ -40,15 +40,14 @@ public class Main {
             //     System.out.println("Actual: CrackerBear");
             }
         }
-        
         //squirrel is 0,1
         //elephant is 1,0
-
     }
     public static double average(List<Double> list) {
         double average = 0.0; 
-        for (double i : list)
-        average += i;
+        for (double i : list){
+            average += i;
+        }
         return average/list.size();
     }
 }

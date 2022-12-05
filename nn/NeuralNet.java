@@ -8,7 +8,7 @@ public class NeuralNet {
     int numClasses;
     List<Layer> layers;
     LossFunction lossFunction;
-    static double ALPHA = 500;
+    static double ALPHA = 1000;
 
     public NeuralNet(int numInputs, int numClasses, List<Integer> numNodesInHiddenLayers) {
         this.numInputs = numInputs;
