@@ -10,18 +10,25 @@ public class NeuralNet {
     LossFunction lossFunction;
     static double ALPHA = 1000;
 
-    public NeuralNet(int numInputs, int numClasses, List<Integer> numNodesInHiddenLayers) {
+    // public NeuralNet(int numInputs, int numClasses, List<Integer> numNodesInHiddenLayers) {
+    //     this.numInputs = numInputs;
+    //     this.numClasses = numClasses;
+    //     layers = new ArrayList<>();
+    //     for (int i = 0; i < numNodesInHiddenLayers.size(); i++) {
+    //         if (i == 0) {
+    //             layers.add(new LogLayer(numInputs, numNodesInHiddenLayers.get(i)));
+    //         } else {
+    //             layers.add(new LogLayer(numNodesInHiddenLayers.get(i - 1), numNodesInHiddenLayers.get(i)));
+    //         }
+    //     }
+    //     layers.add(new LogLayer(numNodesInHiddenLayers.get(numNodesInHiddenLayers.size() - 1), numClasses));
+    //     lossFunction = new SquareLoss();
+    // }
+
+    public NeuralNet(int numInputs, int numClasses, List<Layer> layers) {
         this.numInputs = numInputs;
         this.numClasses = numClasses;
-        layers = new ArrayList<>();
-        for (int i = 0; i < numNodesInHiddenLayers.size(); i++) {
-            if (i == 0) {
-                layers.add(new LogLayer(numInputs, numNodesInHiddenLayers.get(i)));
-            } else {
-                layers.add(new LogLayer(numNodesInHiddenLayers.get(i - 1), numNodesInHiddenLayers.get(i)));
-            }
-        }
-        layers.add(new LogLayer(numNodesInHiddenLayers.get(numNodesInHiddenLayers.size() - 1), numClasses));
+        this.layers = layers;
         lossFunction = new SquareLoss();
     }
 
